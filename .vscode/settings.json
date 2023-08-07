@@ -1,0 +1,20 @@
+{
+    "Lua.diagnostics.globals": [
+        "LibStub",
+        "LinkWrangler",
+        "max",
+        "CreateFrame",
+        "UIParent",
+        "InterfaceOptions_AddCategory",
+        "AttuneHelper_cfgShowTooltip",
+        "SendChatMessage",
+        "strtrim",
+        "strsplit",
+        "DEFAULT_CHAT_FRAME",
+        "AttuneHelper_cfgShowTooltipText",
+        "time",
+        "ItemAttuneHas",
+        "ChatFrame_AddMessageEventFilter",
+        "ChatFrame_RemoveMessageEventFilter"
+    ]
+}
