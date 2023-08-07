@@ -23,6 +23,20 @@ local ttList = {
 local ttHooks = {}
 local ttLine = {}
 
+function AttuneHelper.printTable(tbl)
+	if not tbl then
+		return
+	end
+
+	if type(tbl) == 'table' then
+		for k, v in pairs(tbl) do
+			print(tostring(k) .. ": " .. tostring(v))
+		end
+	else
+		print(tostring(tbl))
+	end
+end
+
 function AttuneHelper:OnInitialize()
 	L = LibStub("AceLocale-3.0"):GetLocale(CONST_ADDON_NAME, true)
 
@@ -30,6 +44,8 @@ function AttuneHelper:OnInitialize()
 		profile = {
 			showTooltip = true,
 			cacheDuration = 1,
+			showItemId = false,
+			showStats = true
 		}
 	}
 
@@ -39,6 +55,7 @@ function AttuneHelper:OnInitialize()
 		name = CONST_ADDON_NAME,
 		handler = AttuneHelper,
 		type = 'group',
+		inline = true,
 		args = {
 			showTooltip = {
 				type = "toggle",
@@ -68,6 +85,30 @@ function AttuneHelper:OnInitialize()
 					db.profile.cacheDuration = val
 				end,
 				order = 2
+			},
+
+			showItemId = {
+				type = "toggle",
+				name = L["Show item ID"],
+				get = function()
+					return db.profile.showItemId
+				end,
+				set = function()
+					db.profile.showItemId = not db.profile.showItemId
+				end,
+				order = 3
+			},
+
+			showStats = {
+				type = "toggle",
+				name = L["Show stats"],
+				get = function()
+					return db.profile.showStats
+				end,
+				set = function()
+					db.profile.showStats = not db.profile.showStats
+				end,
+				order = 4
 			},
 		}
 	}
@@ -99,7 +140,7 @@ function AttuneHelper.CHAT_MSG_SYSTEM(_, _, message)
 
 		cache[id].attuned = false
 		cache[id].type = nil
-		cache[id].affixId = nil
+		cache[id].suffixId = nil
 		cache[id].timestamp = time()
 		cache[id].queried = true
 		matched = true
@@ -113,10 +154,10 @@ function AttuneHelper.CHAT_MSG_SYSTEM(_, _, message)
 			matched = true
 		else
 			-- Third message (optional)
-			local type, affixId = message:match('Random: ([^%(]+) %((-?%d+)%)')
+			local type, suffixId = message:match('Random: ([^%(]+) %((-?%d+)%)')
 			if lastId and type then
 				cache[lastId].type = type
-				cache[lastId].affixId = tonumber(affixId)
+				cache[lastId].suffixId = tonumber(suffixId)
 				matched = true
 			end
 		end
@@ -215,7 +256,8 @@ function AttuneHelper:UnhookTip(tooltip, script)
 	end
 end
 
-function AttuneHelper:GetAttunementInfo(itemId)
+function AttuneHelper:GetAttunementInfo(itemLink)
+	local itemId = tonumber(itemLink:match('item:(%d+)'))
 	if type(itemId) ~= "number" or itemId <= 0 then
 		return {}
 	end
@@ -226,7 +268,27 @@ function AttuneHelper:GetAttunementInfo(itemId)
 
 	if cache[itemId] then
 		if cache[itemId].type then
-			output[#output+1] = "Type: " .. cache[itemId].type .. " (" .. tostring(cache[itemId].affixId) .. ")"
+			output[#output+1] = "Type: " .. cache[itemId].type .. " (" .. tostring(cache[itemId].suffixId) .. ")"
+
+			if db.profile.showStats then
+				local uniqueId = itemLink:match('item:%d+:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:([^:]*)')
+				local linkLevel = itemLink:match('item:%d+:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:([^:]*)')
+				local _, link = GetItemInfo('item:' .. tostring(itemId) .. '::::::' .. tostring(cache[itemId].suffixId) .. ':' .. tostring(uniqueId) .. ':' .. tostring(linkLevel))
+
+				local stats = {}
+				GetItemStats(link, stats)
+
+				for k, v in pairs(stats) do
+					if v and v ~= 0 then
+						local sign = '+'
+						if v < 0 then
+							sign = '-'
+						end
+
+						output[#output+1] = '  |cffbbbbbb' .. sign .. tostring(v) .. ' ' .. tostring(_G[k]) .. '|r'
+					end
+				end
+			end
 		end
 	end
 
@@ -237,12 +299,19 @@ function AttuneHelper:OnTooltipSetItem(tooltip, ...)
 	local itemLink = select(2, tooltip:GetItem())
 	if not itemLink then return end
 	local itemId = tonumber(itemLink:match('item:(%d+)'))
-	if itemId and db.profile.showTooltip then
-		local attunementInfo = self:GetAttunementInfo(itemId)
+	
+	if itemLink and db.profile.showTooltip then
+		local attunementInfo = self:GetAttunementInfo(itemLink)
+
+		if #attunementInfo > 0 or db.profile.showItemId then
+			if db.profile.showItemId then
+				tooltip:AddLine("|cffff00aaAttuneHelper: " .. tostring(itemId) .. "|r")
+			else
+				tooltip:AddLine("|cffff00aaAttuneHelper:|r")
+			end
+		end
 
 		if #attunementInfo > 0 then
-			tooltip:AddLine("|cffff00aaAttuneHelper:|r")
-
 			for _, v in pairs(attunementInfo) do
 				tooltip:AddLine(v)
 			end
