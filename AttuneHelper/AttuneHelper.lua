@@ -1,5 +1,5 @@
 ﻿local CONST_ADDON_NAME = "AttuneHelper"
-local AttuneHelper = LibStub("AceAddon-3.0"):NewAddon(CONST_ADDON_NAME, "AceConsole-3.0", "AceHook-3.0")
+AttuneHelper = LibStub("AceAddon-3.0"):NewAddon(CONST_ADDON_NAME, "AceConsole-3.0", "AceHook-3.0")
 
 local cache = {}
 local lastId = nil
@@ -34,6 +34,17 @@ function AttuneHelper.printTable(tbl)
 		end
 	else
 		print(tostring(tbl))
+	end
+end
+
+
+function AttuneHelper.test(skillIndex)
+	_, skillType, _, isExpanded, _, _ = GetTradeSkillInfo(skillIndex)
+	for index = GetNumTradeSkills(), 1, -1 do
+		print(skillType)
+		if skillType == "header" then
+			ExpandTradeSkillSubClass(index)
+		end
 	end
 end
 
@@ -299,7 +310,7 @@ function AttuneHelper:OnTooltipSetItem(tooltip, ...)
 	local itemLink = select(2, tooltip:GetItem())
 	if not itemLink then return end
 	local itemId = tonumber(itemLink:match('item:(%d+)'))
-	
+
 	if itemLink and db.profile.showTooltip then
 		local attunementInfo = self:GetAttunementInfo(itemLink)
 

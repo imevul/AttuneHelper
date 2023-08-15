@@ -17,6 +17,20 @@
         "ChatFrame_AddMessageEventFilter",
         "ChatFrame_RemoveMessageEventFilter",
         "GetItemStats",
-        "GetItemInfo"
+        "GetItemInfo",
+        "C_TradeSkillUI",
+        "UIDropDownMenu_SetSelectedID",
+        "UIDropDownMenu_Initialize",
+        "UIDropDownMenu_SetWidth",
+        "UIDropDownMenu_SetButtonWidth",
+        "UIDropDownMenu_JustifyText",
+        "FilterDropDown",
+        "GetItemInfoInstant",
+        "UIDropDownMenu_CreateInfo",
+        "UIDropDownMenu_AddButton",
+        "GameTooltip"
+    ],
+    "Lua.diagnostics.disable": [
+        "undefined-field"
     ]
 }
