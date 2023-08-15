@@ -28,10 +28,10 @@ jobs:
         uses: thedoctor0/zip-release@0.7.1
         with:
           type: 'zip'
-          filename: 'release.zip'
-          exclusions: '*.git* /*node_modules/* .editorconfig .vscode'
+          filename: '${{ github.event.repository.name }}-${{  github.ref_name }}.zip'
+          exclusions: '*.git* /*node_modules/* .editorconfig .vscode* README.md tooltip.png'
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "release.zip"
+          artifacts: "${{ github.event.repository.name }}-${{  github.ref_name }}.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
