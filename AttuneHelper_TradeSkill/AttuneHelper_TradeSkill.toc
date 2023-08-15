@@ -1,0 +1,14 @@
+## Interface: 30300
+## Title: AttuneHelper_TradeSkill
+## Notes: Attunement related things for tradeskills
+## Author: Imevul
+## Version: 1.0.1-Release
+## SavedVariables: AttuneHelperDB
+## Dependencies: AttuneHelper
+## OptionalDeps: Ace3
+## X-Category: Imevul
+## X-Part-Of: AttuneHelper
+
+Localization\Locale-enUS.lua
+
+AttuneHelper_TradeSkill.lua
