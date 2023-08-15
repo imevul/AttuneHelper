@@ -2,7 +2,7 @@
 ## Title: AttuneHelper
 ## Notes: Helps you keep track of attuned items
 ## Author: Imevul
-## Version: 1.0.0-Release
+## Version: 1.0.1-Release
 ## SavedVariables: AttuneHelperDB
 ## OptionalDeps: Ace3, LinkWrangler
 ## X-Category: Imevul
