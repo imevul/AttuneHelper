@@ -28,11 +28,11 @@ jobs:
         uses: thedoctor0/zip-release@0.7.1
         with:
           type: 'zip'
-          path: 'src/*'
+          directory: 'src'
           filename: '${{ github.event.repository.name }}-${{  github.ref_name }}.zip'
           exclusions: '*.git* /*node_modules/* .editorconfig .vscode .vscode/* README.md tooltip.png'
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "${{ github.event.repository.name }}-${{  github.ref_name }}.zip"
+          artifacts: "src/${{ github.event.repository.name }}-${{  github.ref_name }}.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
