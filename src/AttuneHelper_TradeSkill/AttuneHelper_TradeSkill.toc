@@ -2,7 +2,7 @@
 ## Title: AttuneHelper_TradeSkill
 ## Notes: Attunement related things for tradeskills
 ## Author: Imevul
-## Version: 1.0.4-Release
+## Version: 1.0.5-Release
 ## SavedVariables: AttuneHelperDB
 ## Dependencies: AttuneHelper
 ## OptionalDeps: Ace3
