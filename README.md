@@ -7,7 +7,7 @@ Features:
 
 ## Installation
 
-Extract to Interface/AddOns/AttuneHelper and enable the addon in-game
+Extract to Interface/AddOns and enable the addon in-game
 
 # Examples
 
