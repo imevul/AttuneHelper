@@ -23,31 +23,6 @@ local ttList = {
 local ttHooks = {}
 local ttLine = {}
 
-function AttuneHelper.printTable(tbl)
-	if not tbl then
-		return
-	end
-
-	if type(tbl) == 'table' then
-		for k, v in pairs(tbl) do
-			print(tostring(k) .. ": " .. tostring(v))
-		end
-	else
-		print(tostring(tbl))
-	end
-end
-
-
-function AttuneHelper.test(skillIndex)
-	_, skillType, _, isExpanded, _, _ = GetTradeSkillInfo(skillIndex)
-	for index = GetNumTradeSkills(), 1, -1 do
-		print(skillType)
-		if skillType == "header" then
-			ExpandTradeSkillSubClass(index)
-		end
-	end
-end
-
 function AttuneHelper:OnInitialize()
 	L = LibStub("AceLocale-3.0"):GetLocale(CONST_ADDON_NAME, true)
 
@@ -149,27 +124,34 @@ function AttuneHelper.CHAT_MSG_SYSTEM(_, _, message)
 			cache[id] = {}
 		end
 
-		cache[id].attuned = false
+		cache[id].attuned = nil
 		cache[id].type = nil
 		cache[id].suffixId = nil
 		cache[id].timestamp = time()
 		cache[id].queried = true
 		matched = true
 	else
-		-- Second message
-		local attuned = message:match('Attuned: (%w+)')
-		if lastId and attuned == 'yes' then
-			cache[lastId].attuned = true
-			matched = true
-		elseif lastId and attuned == 'no' then
+		id = tonumber(message:match('You have not attuned with item (%d+).'))
+		if id then
+			-- Not attuned
+			cache[id].attuned = false
+			suppressCounter = math.min(suppressCounter, 1)
 			matched = true
 		else
-			-- Third message (optional)
-			local type, suffixId = message:match('Random: ([^%(]+) %((-?%d+)%)')
-			if lastId and type then
-				cache[lastId].type = type
-				cache[lastId].suffixId = tonumber(suffixId)
+			-- Second message
+			local attuned = message:match('Attuned: (%w+)')
+			if lastId and attuned == 'yes' then
+				cache[lastId].attuned = true
 				matched = true
+			else
+				-- Third message (optional)
+				local type, suffixId = message:match('Random: ([^%(]+) %((-?%d+)%)')
+				if lastId and type then
+					cache[lastId].type = type
+					cache[lastId].suffixId = tonumber(suffixId)
+					suppressCounter = math.min(suppressCounter, 1)
+					matched = true
+				end
 			end
 		end
 
@@ -189,6 +171,13 @@ function AttuneHelper:CheckAttune(itemId)
 		return
 	end
 
+	if SynastriaCoreLib then
+		local itemValid = SynastriaCoreLib.CheckItemValid(itemId)
+		if not (itemValid == -2 or itemValid > 0) then
+			return
+		end
+	end
+
 	if not cache[itemId] then
 		cache[itemId] = {}
 		cache[itemId].timestamp = 0
@@ -196,10 +185,16 @@ function AttuneHelper:CheckAttune(itemId)
 
 	local currentTime = time()
 
-	if not ItemAttuneHas[itemId] or ItemAttuneHas[itemId] < 100 then
-		cache[itemId].attuned = false
-		cache[itemId].timestamp = currentTime
-		return
+	if ItemAttuneHas[itemId] ~= nil and cache[itemId].attuned == nil then
+		if SynastriaCoreLib then
+			cache[itemId].attuned = SynastriaCoreLib.IsAttuned(itemId)
+		else
+			cache[itemId].attuned = ItemAttuneHas[itemId] == 100
+		end
+
+		if cache[itemId].queried then
+			cache[itemId].timestamp = currentTime
+		end
 	end
 
 	if cache[itemId].queried and not cache[itemId].type then
@@ -278,6 +273,16 @@ function AttuneHelper:GetAttunementInfo(itemLink)
 	self:CheckAttune(itemId)
 
 	if cache[itemId] then
+		if cache[itemId].attuned == nil then
+			output[#output+1] = "Attuned: |cffbbbbbbQuerying...|r"
+		else
+			if cache[itemId].attuned then
+				output[#output+1] = "Attuned: |c0000ff00Yes|r"
+			else
+				output[#output+1] = "Attuned: |c00ff0000No|r"
+			end
+		end
+
 		if cache[itemId].type then
 			output[#output+1] = "Type: " .. cache[itemId].type .. " (" .. tostring(cache[itemId].suffixId) .. ")"
 

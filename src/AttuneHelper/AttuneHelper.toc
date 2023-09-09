@@ -2,9 +2,9 @@
 ## Title: AttuneHelper
 ## Notes: Helps you keep track of attuned items
 ## Author: Imevul
-## Version: 1.0.5-Release
+## Version: 1.0.6-Release
 ## SavedVariables: AttuneHelperDB
-## OptionalDeps: Ace3, LinkWrangler
+## OptionalDeps: Ace3, LinkWrangler, SynastriaCoreLib
 ## X-Category: Imevul
 
 #@no-lib-strip@
@@ -17,6 +17,7 @@ Libs\AceConsole-3.0\AceConsole-3.0.xml
 Libs\AceDB-3.0\AceDB-3.0.xml
 Libs\AceHook-3.0\AceHook-3.0.xml
 Libs\AceLocale-3.0\AceLocale-3.0.xml
+Libs\SynastriaCoreLib\SynastriaCoreLib.lua
 #@end-no-lib-strip@
 
 Localization\Locale-enUS.lua
