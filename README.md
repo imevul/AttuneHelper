@@ -5,6 +5,10 @@ A simple addon to add some QOL for attunements
 Features:
 - `.checkattune` info in tooltip
 
+## Dependencies
+
+- [SynastriaCoreLib](https://github.com/imevul/SynastriaCoreLib/releases) (Optional)
+
 ## Installation
 
 1. Download the [latest release](https://github.com/imevul/AttuneHelper/releases)
