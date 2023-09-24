@@ -7,7 +7,8 @@ Features:
 
 ## Installation
 
-Extract to Interface/AddOns and enable the addon in-game
+1. Download the [latest release](https://github.com/imevul/AttuneHelper/releases)
+2. Extract to Interface/AddOns and enable the addon in-game
 
 # Examples
 
