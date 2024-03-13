@@ -185,11 +185,11 @@ function AttuneHelper:CheckAttune(itemId)
 
 	local currentTime = time()
 
-	if ItemAttuneHas[itemId] ~= nil and cache[itemId].attuned == nil then
+	if GetItemAttuneProgress and GetItemAttuneProgress(itemId) ~= nil and cache[itemId].attuned == nil then
 		if SynastriaCoreLib then
 			cache[itemId].attuned = SynastriaCoreLib.IsAttuned(itemId)
 		else
-			cache[itemId].attuned = ItemAttuneHas[itemId] == 100
+			cache[itemId].attuned = GetItemAttuneProgress(itemId) == 100
 		end
 
 		if cache[itemId].queried then

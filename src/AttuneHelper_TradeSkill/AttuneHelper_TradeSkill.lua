@@ -111,11 +111,11 @@ end
 local origGetFilteredRecipeIDs = C_TradeSkillUI.GetFilteredRecipeIDs
 
 function AttuneHelper_TradeSkill.isAttuned(itemLink, itemId)
-    if not ItemAttuneHas then
+    if not GetItemAttuneProgress then
         return false
     end
 
-    return (ItemAttuneHas[itemId] or 0) == 100
+    return (GetItemAttuneProgress(itemId) or 0) == 100
 end
 
 function AttuneHelper_TradeSkill.filterRecipeIDs(...)
