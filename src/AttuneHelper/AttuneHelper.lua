@@ -180,13 +180,15 @@ function AttuneHelper:GetAttunementInfo(itemLink)
 			end
 
 			if db.profile.showStats and itemInfo.stats then
-				for _, stat in ipairs(itemInfo.stats) do
-					local sign = '+'
-					if stat.value < 0 then
-						sign = '-'
-					end
+				for i, stat in ipairs(itemInfo.stats) do
+					if type(stat.value) == 'number' then
+						local sign = '+'
+						if stat.value < 0 then
+							sign = '-'
+						end
 
-					output[#output+1] = '  |cffbbbbbb' .. sign .. tostring(stat.value) .. ' ' .. stat.name .. '|r'
+						output[#output+1] = '  |cffbbbbbb' .. sign .. tostring(stat.value) .. ' ' .. stat.name .. '|r'
+					end
 				end
 			end
 		end
