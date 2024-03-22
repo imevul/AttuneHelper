@@ -7,7 +7,8 @@ if L then
 
 	-- Interface Options
 	L["Enable Attunement Tooltips"] = true
-	L["Cache duration (minutes)"] = true
+	L["Show attuned"] = true
+	L["Show attuned type"] = true
 	L["Show item ID"] = true
 	L["Show stats"] = true
 end

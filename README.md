@@ -3,7 +3,7 @@
 A simple addon to add some QOL for attunements
 
 Features:
-- `.checkattune` info in tooltip
+- More detailed attunement information in tooltip
 
 ## Dependencies
 
