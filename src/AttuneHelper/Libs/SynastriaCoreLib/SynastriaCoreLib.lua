@@ -86,12 +86,12 @@ function SynastriaCoreLib.GetItemStats(itemLink, suffixId)
     local linkLevel = itemLink:match('item:%d+:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:([^:]*)')
     local _, link = GetItemInfo(('item:%d::::::%s:%s:%s'):format(itemId, suffixId, uniqueId, linkLevel))
 
-    local stats = {}
-    GetItemStats(link, stats)
+    local stats = GetItemStats(link)
 
+    local ret = {}
     for k, v in pairs(stats) do
         if v and v ~= 0 then
-            table.insert(stats, {
+            table.insert(ret, {
                 id = k,
                 name = tostring(_G[k]),
                 value = v
@@ -99,7 +99,7 @@ function SynastriaCoreLib.GetItemStats(itemLink, suffixId)
         end
     end
 
-    return stats
+    return ret
 end
 
 function SynastriaCoreLib.GetItemInfo(itemLink)

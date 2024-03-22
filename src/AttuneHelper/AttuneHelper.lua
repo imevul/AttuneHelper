@@ -25,7 +25,8 @@ function AttuneHelper:OnInitialize()
 			showAttuned = true,
 			showAttunedType = false,
 			showItemId = false,
-			showStats = true
+			showStats = true,
+			colorBlindMode = false
 		}
 	}
 
@@ -101,6 +102,18 @@ function AttuneHelper:OnInitialize()
 				end,
 				order = 5
 			},
+
+			colorBlindMode = {
+				type = "toggle",
+				name = L["Colorblind mode"],
+				get = function()
+					return db.profile.colorBlindMode
+				end,
+				set = function()
+					db.profile.colorBlindMode = not db.profile.colorBlindMode
+				end,
+				order = 5
+			},
 		}
 	}
 
@@ -168,9 +181,17 @@ function AttuneHelper:GetAttunementInfo(itemLink)
 	if itemInfo then
 		if db.profile.showAttuned then
 			if itemInfo.attuned then
-				output[#output+1] = "Attuned: |c0000ff00Yes|r"
+				if db.profile.colorBlindMode then
+					output[#output+1] = "Attuned: |c00648fffYes|r"
+				else
+					output[#output+1] = "Attuned: |c0000ff00Yes|r"
+				end
 			else
-				output[#output+1] = "Attuned: |c00ff0000No|r"
+				if db.profile.colorBlindMode then
+					output[#output+1] = "Attuned: |c00fe6100No|r"
+				else
+					output[#output+1] = "Attuned: |c00ff0000No|r"
+				end
 			end
 		end
 
@@ -180,7 +201,7 @@ function AttuneHelper:GetAttunementInfo(itemLink)
 			end
 
 			if db.profile.showStats and itemInfo.stats then
-				for i, stat in ipairs(itemInfo.stats) do
+				for _, stat in ipairs(itemInfo.stats) do
 					if type(stat.value) == 'number' then
 						local sign = '+'
 						if stat.value < 0 then

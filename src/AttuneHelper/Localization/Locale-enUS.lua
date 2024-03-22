@@ -11,4 +11,5 @@ if L then
 	L["Show attuned type"] = true
 	L["Show item ID"] = true
 	L["Show stats"] = true
+	L["Colorblind mode"] = true
 end
