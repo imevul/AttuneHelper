@@ -1,6 +1,7 @@
 ﻿local CONST_ADDON_NAME = "AttuneHelper"
 AttuneHelper = LibStub("AceAddon-3.0"):NewAddon(CONST_ADDON_NAME, "AceConsole-3.0", "AceHook-3.0")
 
+local SynastriaCoreLib = LibStub('SynastriaCoreLib-1.0')
 local L, db
 local ttList = {
 	["GameTooltip"] = {
