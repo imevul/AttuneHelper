@@ -29,7 +29,8 @@
         "UIDropDownMenu_CreateInfo",
         "UIDropDownMenu_AddButton",
         "GameTooltip",
-        "GetTradeSkillInfo"
+        "GetTradeSkillInfo",
+        "GetItemAttuneProgress"
     ],
     "Lua.diagnostics.disable": [
         "undefined-field"

@@ -181,6 +181,17 @@ function AttuneHelper:GetAttunementInfo(itemLink)
 
 	if itemInfo then
 		if db.profile.showAttuned then
+			if not itemInfo.attuned then
+				local itemId = SynastriaCoreLib.parseItemId(itemLink)
+				if itemId then
+					local tmpInfo = SynastriaCoreLib.GetCachedItem(itemId, true)
+					if itemInfo.attuned == false then itemInfo.attuned = tmpInfo.attuned end
+					if itemInfo.suffixId == nil then itemInfo.suffixId = tmpInfo.suffixId end
+					if itemInfo.suffixName == nil then itemInfo.suffixName = tmpInfo.suffixName end
+					itemInfo.queried = tmpInfo.queried or nil
+				end
+			end
+
 			if itemInfo.attuned then
 				if db.profile.colorBlindMode then
 					output[#output+1] = "Attuned: |c00648fffYes|r"
@@ -196,9 +207,13 @@ function AttuneHelper:GetAttunementInfo(itemLink)
 			end
 		end
 
-		if itemInfo.suffixName then
-			if db.profile.showAttunedType then
-				output[#output+1] = "Type: " .. itemInfo.suffixName .. " (" .. itemInfo.suffixId .. ")"
+		if itemInfo.suffixName or itemInfo.overwrite then
+			if itemInfo.suffixName and (db.profile.showAttunedType or itemInfo.queried) then
+				if (itemInfo.suffixId or 0) == 0 then
+					output[#output+1] = "Type: " .. itemInfo.suffixName
+				else
+					output[#output+1] = "Type: " .. itemInfo.suffixName .. " (" .. itemInfo.suffixId .. ")"
+				end
 			end
 
 			if db.profile.showStats and itemInfo.stats then
@@ -208,7 +223,7 @@ function AttuneHelper:GetAttunementInfo(itemLink)
 						if stat.value < 0 then
 							sign = '-'
 						end
-
+	
 						output[#output+1] = '  |cffbbbbbb' .. sign .. tostring(stat.value) .. ' ' .. stat.name .. '|r'
 					end
 				end
