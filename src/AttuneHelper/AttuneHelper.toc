@@ -2,10 +2,10 @@
 ## Title: AttuneHelper
 ## Notes: Helps you keep track of attuned items
 ## Author: Imevul
-## Version: 1.0.12-Release
+## Version: 1.0.13-Release
 ## SavedVariables: AttuneHelperDB
-## OptionalDeps: Ace3, LinkWrangler, SynastriaCoreLib-1.0
-## X-Embeds: Ace3, SynastriaCoreLib-1.0
+## OptionalDeps: Ace3, LinkWrangler, SynastriaCoreLib-1.0, LibDataBroker-1.1
+## X-Embeds: Ace3, SynastriaCoreLib-1.0, LibDataBroker-1.1
 ## X-Category: Imevul
 
 embeds.xml

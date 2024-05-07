@@ -4,7 +4,7 @@
 ## Author: Imevul
 ## Version: 1.0.6-Release
 ## SavedVariables: AttuneHelperDB
-## Dependencies: AttuneHelper
+## Dependencies: AttuneHelper, NYI
 ## OptionalDeps: Ace3
 ## X-Category: Imevul
 ## X-Part-Of: AttuneHelper

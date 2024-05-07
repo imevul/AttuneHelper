@@ -177,21 +177,10 @@ end
 
 function AttuneHelper:GetAttunementInfo(itemLink)
 	local output = {}
-	local itemInfo = SynastriaCoreLib.GetItemInfo(itemLink)
+	local itemInfo = SynastriaCoreLib.GetItemInfo(itemLink, true)
 
 	if itemInfo then
 		if db.profile.showAttuned then
-			if not itemInfo.attuned then
-				local itemId = SynastriaCoreLib.parseItemId(itemLink)
-				if itemId then
-					local tmpInfo = SynastriaCoreLib.GetCachedItem(itemId, true)
-					if itemInfo.attuned == false then itemInfo.attuned = tmpInfo.attuned end
-					if itemInfo.suffixId == nil then itemInfo.suffixId = tmpInfo.suffixId end
-					if itemInfo.suffixName == nil then itemInfo.suffixName = tmpInfo.suffixName end
-					itemInfo.queried = tmpInfo.queried or nil
-				end
-			end
-
 			if itemInfo.attuned then
 				if db.profile.colorBlindMode then
 					output[#output+1] = "Attuned: |c00648fffYes|r"

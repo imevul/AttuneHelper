@@ -1,6 +1,8 @@
 local CONST_ADDON_NAME = "AttuneHelper_TradeSkill"
 AttuneHelper_TradeSkill = AttuneHelper:NewModule(CONST_ADDON_NAME)
 
+if not C_TradeSkillUI then return end
+
 local L, db
 local FILTER_NONE = 1
 local FILTER_ITEMS = 2
