@@ -80,7 +80,7 @@ function AttuneHelper:OnInitialize()
 				order = 3
 			},
 
-			showAttunedType = {
+--[[ 			showAttunedType = {
 				type = "toggle",
 				name = L["Show attuned type"],
 				get = function()
@@ -102,7 +102,7 @@ function AttuneHelper:OnInitialize()
 					db.profile.showStats = not db.profile.showStats
 				end,
 				order = 5
-			},
+			}, ]]
 
 			colorBlindMode = {
 				type = "toggle",
@@ -192,29 +192,6 @@ function AttuneHelper:GetAttunementInfo(itemLink)
 					output[#output+1] = "Attuned: |c00fe6100No|r"
 				else
 					output[#output+1] = "Attuned: |c00ff0000No|r"
-				end
-			end
-		end
-
-		if itemInfo.suffixName or itemInfo.overwrite then
-			if itemInfo.suffixName and (db.profile.showAttunedType or itemInfo.queried) then
-				if (itemInfo.suffixId or 0) == 0 then
-					output[#output+1] = "Type: " .. itemInfo.suffixName
-				else
-					output[#output+1] = "Type: " .. itemInfo.suffixName .. " (" .. itemInfo.suffixId .. ")"
-				end
-			end
-
-			if db.profile.showStats and itemInfo.stats then
-				for _, stat in ipairs(itemInfo.stats) do
-					if type(stat.value) == 'number' then
-						local sign = '+'
-						if stat.value < 0 then
-							sign = '-'
-						end
-	
-						output[#output+1] = '  |cffbbbbbb' .. sign .. tostring(stat.value) .. ' ' .. stat.name .. '|r'
-					end
 				end
 			end
 		end
